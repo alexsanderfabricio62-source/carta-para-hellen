@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Carta Especial 💜</title>
+
+<style>
+body {
+  margin: 0;
+  background: #4b0082;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* ===== ENVELOPE ===== */
+.envelope-area {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  background: #4b0082;
+}
+
+.envelope {
+  width: 260px;
+  height: 180px;
+  background: white;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(0,0,0,0.4);
+}
+
+.envelope:before {
+  content: "";
+  position: absolute;
+  border-left: 130px solid transparent;
+  border-right: 130px solid transparent;
+  border-top: 90px solid #ddd;
+  width: 0;
+  height: 0;
+  top: 0;
+  left: 0;
+  transform-origin: top;
+  transition: 1s;
+}
+
+.envelope.aberto:before {
+  transform: rotateX(180deg);
+}
+
+.envelope span {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  color: purple;
+}
+
+/* ===== FOTOS ===== */
+.foto-flutuante {
+  position: absolute;
+  width: 140px;
+  border-radius: 15px;
+  opacity: 0.4;
+  cursor: pointer;
+  z-index: 1;
+  pointer-events: auto;
+  transition: transform 0.4s, opacity 0.4s, box-shadow 0.4s;
+}
+
+.foto-destaque {
+  transform: scale(1.8) rotate(0deg) !important;
+  opacity: 1 !important;
+  z-index: 20 !important;
+  box-shadow: 0 0 40px rgba(255,255,255,0.9);
+}
+
+/* ===== CARTA ===== */
+.carta-container {
+  position: fixed;
+  inset: 10%;
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  padding: 25px;
+  overflow-y: auto;
+  display: none;
+  z-index: 10;
+  animation: surgir 1s ease;
+}
+
+@keyframes surgir {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+h1 {
+  text-align: center;
+  color: #4b0082;
+}
+
+.dancando {
+  display: inline-block;
+  animation: dance 0.6s infinite alternate;
+  color: purple;
+  font-weight: bold;
+}
+
+@keyframes dance {
+  from { transform: rotate(-2deg); }
+  to { transform: rotate(2deg); }
+}
+
+button {
+  margin: 20px auto;
+  display: block;
+  padding: 15px 25px;
+  background: purple;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+/* ===== CONFETE ===== */
+.confete {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  animation: cair 3s linear forwards;
+  z-index: 999;
+}
+
+@keyframes cair {
+  to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+/* ===== GATOS ===== */
+.gato {
+  position: fixed;
+  width: 80px;
+  animation: cair 4s linear forwards;
+  z-index: 999;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ENVELOPE -->
+<div class="envelope-area" id="envelopeArea">
+  <div class="envelope" id="envelope" onclick="abrirEnvelope()">
+    <span>💌 Clique para abrir</span>
+  </div>
+</div>
+
+<!-- FOTOS -->
+<img src="foto1.jpg" class="foto-flutuante">
+<img src="foto2.jpg" class="foto-flutuante">
+<img src="foto3.jpg" class="foto-flutuante">
+<img src="foto4.jpg" class="foto-flutuante">
+<img src="foto5.jpg" class="foto-flutuante">
+
+<!-- CARTA -->
+<div class="carta-container" id="carta">
+<h1>💜 O Meu Sonho Mais Lúcido 💜</h1>
+
+<p>
+O meu sonho mais lúcido.<br>
+A alegria constante de te amar.<br>
+Já cheguei a perguntar-me: será esse é o meu melhor?<br>
+Será que mereço todo esse amor?<br>
+Será que posso mesmo fazer-te feliz?<br>
+SERA?<br>
+Será?<br>
+será?<br><br>
+
+Com tantas incertezas, você me mostrou que essas dúvidas são fúteis, passageiras como uma brisa fria no amanhecer de um dia quente.  
+Me inundou com um dilúvio de certezas. Que só você me proporcionou.<br><br>
+
+Me mostrou que o "será" é só pra saber se a gente vai comer na sua casa ou você na minha.  
+Ou será que você tem superpoderes? Pra me conhece tão bem?<br><br>
+
+Me mostrou que há muito mais certezas que incertezas.<br><br>
+
+E por isso que com extremo orgulho e paixão eu falo pra você Hellen todos os dias que te amo...<br><br>
+
+É como já dizia o Daniel Caesar em <strong>Blessed</strong>.<br><br>
+
+<span class="dancando">
+"Pra onde quer que eu vá, onde quer que eu esteja,  
+se você não estiver me cercando com sua energia,  
+eu não quero estar lá...  
+Eu só quero estar perto de VOCÊ"
+</span>
+
+<br><br>
+
+🎵 Referência especial:<br>
+<a href="https://music.youtube.com/watch?v=iEIG0_wwTHg&si=0vsQhuU2TrdhcQfk" target="_blank">
+Clique aqui para ouvir 💜
+</a>
+
+</p>
+
+<button onclick="finalizar()">Terminar leitura 💜</button>
+</div>
+
+<script>
+function abrirEnvelope() {
+  document.getElementById("envelope").classList.add("aberto");
+  setTimeout(() => {
+    document.getElementById("envelopeArea").style.display = "none";
+    document.getElementById("carta").style.display = "block";
+  }, 1000);
+}
+
+/* ===== MOVIMENTO + PAUSA ===== */
+document.querySelectorAll(".foto-flutuante").forEach(img => {
+  let x = Math.random() * (innerWidth - 150);
+  let y = Math.random() * (innerHeight - 150);
+  let dx = (Math.random()*2+1) * (Math.random()<0.5?-1:1);
+  let dy = (Math.random()*2+1) * (Math.random()<0.5?-1:1);
+  let pausado = false;
+
+  img.style.left = x+"px";
+  img.style.top = y+"px";
+  img.style.transform = `rotate(${Math.random()*360}deg)`;
+
+  function mover() {
+    if (!pausado) {
+      x += dx; y += dy;
+      if (x<=0 || x+img.width>=innerWidth) dx*=-1;
+      if (y<=0 || y+img.height>=innerHeight) dy*=-1;
+      img.style.left = x+"px";
+      img.style.top = y+"px";
+    }
+    requestAnimationFrame(mover);
+  }
+  mover();
+
+  img.onclick = () => {
+    pausado = true;
+    img.classList.add("foto-destaque");
+    setTimeout(() => {
+      pausado = false;
+      img.classList.remove("foto-destaque");
+    }, 9000);
+  };
+});
+
+/* ===== CONFETE + GATOS ===== */
+function finalizar() {
+  for (let i=0;i<80;i++){
+    let c=document.createElement("div");
+    c.className="confete";
+    c.style.left=Math.random()*innerWidth+"px";
+    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+
+ const gatos = ["cat1.png", "cat2.png", "cat3.png"];
+
+gatos.forEach(nome => {
+  let g = document.createElement("img");
+  g.src = nome;
+  g.className = "gato";
+  g.style.left = Math.random() * innerWidth + "px";
+  document.body.appendChild(g);
+  setTimeout(() => g.remove(), 4000);
+});
+
+}
+</script>
+
+</body>
+</html>
