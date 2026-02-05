@@ -59,15 +59,6 @@ body {
   color: purple;
 }
 
-/* ===== FOTOS (DISCRETAS) ===== */
-.foto-flutuante {
-  position: absolute;
-  width: 110px;
-  border-radius: 15px;
-  opacity: 0.25;
-  z-index: 1;
-}
-
 /* ===== CARTA ===== */
 .carta-container {
   position: fixed;
@@ -77,7 +68,7 @@ body {
   right: 5%;
   background: rgba(255,255,255,0.98);
   border-radius: 22px;
-  padding: 30px 26px;
+  padding: 32px 26px;
   overflow-y: auto;
   display: none;
   z-index: 10;
@@ -88,26 +79,39 @@ h1 {
   text-align: center;
   color: #4b0082;
   font-size: 30px;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 
 p {
-  font-size: 21px;
-  line-height: 1.75;
+  font-size: 22px;
+  line-height: 1.8;
   color: #222;
 }
 
-/* TEXTO DESTACADO — SEM ANIMAÇÃO */
-.dancando {
+/* TRECHO DESTACADO (SEM ANIMAÇÃO) */
+.destaque {
   font-weight: bold;
   color: #5a1ea6;
 }
 
+/* ===== LINK DA MÚSICA ===== */
+.musica {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.musica a {
+  color: #5a1ea6;
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+}
+
 /* ===== BOTÃO ===== */
 button {
-  margin: 35px auto 10px;
+  margin: 40px auto 10px;
   display: block;
-  padding: 18px 30px;
+  padding: 18px 34px;
   background: #5a1ea6;
   color: white;
   border: none;
@@ -144,31 +148,52 @@ button {
 
 <body>
 
+<!-- ENVELOPE -->
 <div class="envelope-area" id="envelopeArea">
   <div class="envelope" id="envelope" onclick="abrirEnvelope()">
     <span>💌 Clique para abrir</span>
   </div>
 </div>
 
-<img src="foto1.jpg" class="foto-flutuante">
-<img src="foto2.jpg" class="foto-flutuante">
-<img src="foto3.jpg" class="foto-flutuante">
-<img src="foto4.jpg" class="foto-flutuante">
-<img src="foto5.jpg" class="foto-flutuante">
-
+<!-- CARTA -->
 <div class="carta-container" id="carta">
 <h1>💜 O Meu Sonho Mais Lúcido 💜</h1>
 
 <p>
-O meu sonho mais lúcido.<br><br>
+O meu sonho mais lúcido.<br>
+A alegria constante de te amar.<br><br>
 
-Com tantas incertezas, você me mostrou que essas dúvidas são fúteis, passageiras como uma brisa fria no amanhecer de um dia quente.
-<br><br>
+Já cheguei a perguntar-me: será esse é o meu melhor?<br>
+Será que mereço todo esse amor?<br>
+Será que posso mesmo fazer-te feliz?<br>
+Será?<br>
+Será?<br>
+Será?<br><br>
 
-<span class="dancando">
-“Eu só quero estar perto de você.”
+Com tantas incertezas, você me mostrou que essas dúvidas são fúteis, passageiras como uma brisa fria no amanhecer de um dia quente.  
+Me inundou com um dilúvio de certezas. Que só você me proporcionou.<br><br>
+
+Me mostrou que o "será" é só pra saber se posso comer na sua casa ou você na minha...  
+ou, será que ela tem superpoderes? Como me conhece tão bem?<br><br>
+
+Me mostrou que há muito mais certezas que dúvidas.<br><br>
+
+Como já dizia <strong>Blessed</strong> do Caesar:<br><br>
+
+<span class="destaque">
+"Pra onde quer que eu vá, onde quer que eu esteja,  
+se você não estiver me cercando com sua energia,  
+eu não quero estar lá, não quero estar em lugar nenhum,  
+em que eu não possa te sentir.  
+Eu só quero estar perto de VOCÊ."
 </span>
 </p>
+
+<div class="musica">
+🎵 <a href="https://music.youtube.com/watch?v=iEIG0_wwTHg&si=5zpXPKxygj5sJpyz" target="_blank">
+Ouvir a música 💜
+</a>
+</div>
 
 <button onclick="finalizar()">Terminar leitura 💜</button>
 </div>
