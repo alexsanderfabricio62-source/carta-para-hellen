@@ -10,6 +10,7 @@ body {
   margin: 0;
   background: #4b0082;
   font-family: Arial, sans-serif;
+  overflow: hidden;
 }
 
 /* ===== ENVELOPE ===== */
@@ -88,7 +89,6 @@ p {
   color: #222;
 }
 
-/* TRECHO DESTACADO (SEM ANIMAÇÃO) */
 .destaque {
   font-weight: bold;
   color: #5a1ea6;
@@ -136,12 +136,27 @@ button {
   }
 }
 
-/* ===== GATOS ===== */
-.gato {
+/* ===== FOTOS ANIMADAS ===== */
+.foto {
   position: fixed;
-  width: 85px;
-  animation: cair 4s linear forwards;
-  z-index: 999;
+  width: 140px;
+  z-index: 1;
+  pointer-events: auto;
+  filter: contrast(1.2) saturate(1.1) grayscale(0.1);
+  animation: ruido 0.15s infinite;
+  transition: transform 0.4s, filter 0.4s;
+}
+
+@keyframes ruido {
+  0% { filter: contrast(1.2) brightness(1); }
+  50% { filter: contrast(1.4) brightness(0.95); }
+  100% { filter: contrast(1.2) brightness(1); }
+}
+
+.foto.destaque {
+  z-index: 100;
+  transform: scale(1.6);
+  filter: none;
 }
 </style>
 </head>
@@ -204,7 +219,55 @@ function abrirEnvelope() {
   setTimeout(() => {
     document.getElementById("envelopeArea").style.display = "none";
     document.getElementById("carta").style.display = "block";
+    iniciarFotos();
   }, 1000);
+}
+
+/* ===== FOTOS EM MOVIMENTO ===== */
+const imagens = ["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg","foto6.jpg"];
+const fotos = [];
+
+function iniciarFotos() {
+  imagens.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.className = "foto";
+    img.x = Math.random() * (innerWidth - 150);
+    img.y = Math.random() * (innerHeight - 150);
+    img.vx = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? -1 : 1);
+    img.vy = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? -1 : 1);
+    img.pausado = false;
+
+    img.onclick = () => {
+      img.pausado = true;
+      img.classList.add("destaque");
+      setTimeout(() => {
+        img.classList.remove("destaque");
+        img.pausado = false;
+      }, 4000);
+    };
+
+    document.body.appendChild(img);
+    fotos.push(img);
+  });
+
+  requestAnimationFrame(animarFotos);
+}
+
+function animarFotos() {
+  fotos.forEach(f => {
+    if (f.pausado) return;
+
+    f.x += f.vx;
+    f.y += f.vy;
+
+    if (f.x <= 0 || f.x >= innerWidth - 140) f.vx *= -1;
+    if (f.y <= 0 || f.y >= innerHeight - 140) f.vy *= -1;
+
+    f.style.transform = `translate(${f.x}px, ${f.y}px)`;
+  });
+
+  requestAnimationFrame(animarFotos);
 }
 
 function finalizar() {
@@ -216,16 +279,6 @@ function finalizar() {
     document.body.appendChild(c);
     setTimeout(()=>c.remove(),3000);
   }
-
-  const gatos = ["cat1.png", "cat2.png", "cat3.png"];
-  gatos.forEach(nome => {
-    let g = document.createElement("img");
-    g.src = nome;
-    g.className = "gato";
-    g.style.left = Math.random() * innerWidth + "px";
-    document.body.appendChild(g);
-    setTimeout(() => g.remove(), 4000);
-  });
 }
 </script>
 
