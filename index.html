@@ -94,7 +94,7 @@ p {
   color: #5a1ea6;
 }
 
-/* ===== LINK DA MÚSICA ===== */
+/* ===== LINK MÚSICA ===== */
 .musica {
   margin-top: 25px;
   text-align: center;
@@ -120,6 +120,24 @@ button {
   cursor: pointer;
 }
 
+/* ===== FOTOS FLUTUANTES ===== */
+.foto {
+  position: fixed;
+  width: 140px;
+  border-radius: 15px;
+  opacity: 0.65;
+  z-index: 1; /* atrás da carta */
+  cursor: pointer;
+  transition: transform 0.4s, opacity 0.4s, box-shadow 0.4s;
+}
+
+.foto.destaque-foto {
+  opacity: 1;
+  transform: scale(1.8);
+  z-index: 20;
+  box-shadow: 0 0 35px white;
+}
+
 /* ===== CONFETE ===== */
 .confete {
   position: fixed;
@@ -136,27 +154,12 @@ button {
   }
 }
 
-/* ===== FOTOS ANIMADAS ===== */
-.foto {
+/* ===== GATOS ===== */
+.gato {
   position: fixed;
-  width: 140px;
-  z-index: 1;
-  pointer-events: auto;
-  filter: contrast(1.2) saturate(1.1) grayscale(0.1);
-  animation: ruido 0.15s infinite;
-  transition: transform 0.4s, filter 0.4s;
-}
-
-@keyframes ruido {
-  0% { filter: contrast(1.2) brightness(1); }
-  50% { filter: contrast(1.4) brightness(0.95); }
-  100% { filter: contrast(1.2) brightness(1); }
-}
-
-.foto.destaque {
-  z-index: 100;
-  transform: scale(1.6);
-  filter: none;
+  width: 85px;
+  animation: cair 4s linear forwards;
+  z-index: 999;
 }
 </style>
 </head>
@@ -169,6 +172,14 @@ button {
     <span>💌 Clique para abrir</span>
   </div>
 </div>
+
+<!-- FOTOS -->
+<img src="foto1.jpg" class="foto">
+<img src="foto2.jpg" class="foto">
+<img src="foto3.jpg" class="foto">
+<img src="foto4.jpg" class="foto">
+<img src="foto5.jpg" class="foto">
+<img src="foto6.jpg" class="foto">
 
 <!-- CARTA -->
 <div class="carta-container" id="carta">
@@ -185,10 +196,10 @@ Será?<br>
 Será?<br>
 Será?<br><br>
 
-Com tantas incertezas, você me mostrou que essas dúvidas são fúteis, passageiras como uma brisa fria no amanhecer de um dia quente.  
+Com tantas incertezas, você me mostrou que essas dúvidas são fúteis, passageiras como uma brisa fria no amanhecer de um dia quente.
 Me inundou com um dilúvio de certezas. Que só você me proporcionou.<br><br>
 
-Me mostrou que o "será" é só pra saber se posso comer na sua casa ou você na minha...  
+Me mostrou que o "será" é só pra saber se posso comer na sua casa ou você na minha…
 ou, será que ela tem superpoderes? Como me conhece tão bem?<br><br>
 
 Me mostrou que há muito mais certezas que dúvidas.<br><br>
@@ -196,10 +207,10 @@ Me mostrou que há muito mais certezas que dúvidas.<br><br>
 Como já dizia <strong>Blessed</strong> do Caesar:<br><br>
 
 <span class="destaque">
-"Pra onde quer que eu vá, onde quer que eu esteja,  
-se você não estiver me cercando com sua energia,  
-eu não quero estar lá, não quero estar em lugar nenhum,  
-em que eu não possa te sentir.  
+"Pra onde quer que eu vá, onde quer que eu esteja,
+se você não estiver me cercando com sua energia,
+eu não quero estar lá, não quero estar em lugar nenhum,
+em que eu não possa te sentir.
 Eu só quero estar perto de VOCÊ."
 </span>
 </p>
@@ -219,66 +230,68 @@ function abrirEnvelope() {
   setTimeout(() => {
     document.getElementById("envelopeArea").style.display = "none";
     document.getElementById("carta").style.display = "block";
-    iniciarFotos();
   }, 1000);
 }
 
-/* ===== FOTOS EM MOVIMENTO ===== */
-const imagens = ["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg","foto6.jpg"];
-const fotos = [];
+/* ===== MOVIMENTO TV ANTIGA ===== */
+const fotos = document.querySelectorAll(".foto");
 
-function iniciarFotos() {
-  imagens.forEach(src => {
-    const img = document.createElement("img");
-    img.src = src;
-    img.className = "foto";
-    img.x = Math.random() * (innerWidth - 150);
-    img.y = Math.random() * (innerHeight - 150);
-    img.vx = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? -1 : 1);
-    img.vy = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? -1 : 1);
-    img.pausado = false;
+fotos.forEach(foto => {
+  let x = Math.random() * (innerWidth - 150);
+  let y = Math.random() * (innerHeight - 150);
+  let dx = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? -1 : 1);
+  let dy = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? -1 : 1);
+  let pausado = false;
 
-    img.onclick = () => {
-      img.pausado = true;
-      img.classList.add("destaque");
-      setTimeout(() => {
-        img.classList.remove("destaque");
-        img.pausado = false;
-      }, 4000);
-    };
+  foto.style.left = x + "px";
+  foto.style.top = y + "px";
 
-    document.body.appendChild(img);
-    fotos.push(img);
-  });
+  function mover() {
+    if (!pausado) {
+      x += dx;
+      y += dy;
 
-  requestAnimationFrame(animarFotos);
-}
+      if (x <= 0 || x + foto.offsetWidth >= innerWidth) dx *= -1;
+      if (y <= 0 || y + foto.offsetHeight >= innerHeight) dy *= -1;
 
-function animarFotos() {
-  fotos.forEach(f => {
-    if (f.pausado) return;
-
-    f.x += f.vx;
-    f.y += f.vy;
-
-    if (f.x <= 0 || f.x >= innerWidth - 140) f.vx *= -1;
-    if (f.y <= 0 || f.y >= innerHeight - 140) f.vy *= -1;
-
-    f.style.transform = `translate(${f.x}px, ${f.y}px)`;
-  });
-
-  requestAnimationFrame(animarFotos);
-}
-
-function finalizar() {
-  for (let i=0;i<60;i++){
-    let c=document.createElement("div");
-    c.className="confete";
-    c.style.left=Math.random()*innerWidth+"px";
-    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),3000);
+      foto.style.left = x + "px";
+      foto.style.top = y + "px";
+    }
+    requestAnimationFrame(mover);
   }
+  mover();
+
+  foto.onclick = () => {
+    pausado = true;
+    foto.classList.add("destaque-foto");
+
+    setTimeout(() => {
+      foto.classList.remove("destaque-foto");
+      pausado = false;
+    }, 4000);
+  };
+});
+
+/* ===== CONFETE + GATOS ===== */
+function finalizar() {
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement("div");
+    c.className = "confete";
+    c.style.left = Math.random() * innerWidth + "px";
+    c.style.background = `hsl(${Math.random()*360},100%,50%)`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+
+  const gatos = ["cat1.png","cat2.png","cat3.png"];
+  gatos.forEach(src => {
+    const g = document.createElement("img");
+    g.src = src;
+    g.className = "gato";
+    g.style.left = Math.random() * innerWidth + "px";
+    document.body.appendChild(g);
+    setTimeout(() => g.remove(), 4000);
+  });
 }
 </script>
 
