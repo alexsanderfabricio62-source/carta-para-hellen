@@ -20,8 +20,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 20;              /* acima das fotos */
-  background: transparent; /* NÃO cobre o fundo */
+  z-index: 50;
+  background: #4b0082;
 }
 
 .envelope {
@@ -72,7 +72,7 @@ body {
   padding: 32px 26px;
   overflow-y: auto;
   display: none;
-  z-index: 30; /* acima de tudo */
+  z-index: 10;
 }
 
 /* ===== TEXTO ===== */
@@ -120,13 +120,13 @@ button {
   cursor: pointer;
 }
 
-/* ===== FOTOS FLUTUANTES ===== */
+/* ===== FOTOS ===== */
 .foto {
   position: fixed;
   width: 140px;
   border-radius: 15px;
   opacity: 0.65;
-  z-index: 1; /* fundo */
+  z-index: 1;
   cursor: pointer;
   transition: transform 0.4s, opacity 0.4s, box-shadow 0.4s;
 }
@@ -134,7 +134,7 @@ button {
 .foto.destaque-foto {
   opacity: 1;
   transform: scale(1.8);
-  z-index: 25;
+  z-index: 20;
   box-shadow: 0 0 35px white;
 }
 
@@ -233,39 +233,43 @@ function abrirEnvelope() {
   }, 1000);
 }
 
-/* ===== MOVIMENTO TV ANTIGA ===== */
+/* ===== MOVIMENTO DAS FOTOS (CORRIGIDO) ===== */
 document.querySelectorAll(".foto").forEach(foto => {
   let x = Math.random() * (innerWidth - 150);
   let y = Math.random() * (innerHeight - 150);
+
   let dx = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? -1 : 1);
   let dy = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? -1 : 1);
-  let pausado = false;
+
+  let dxOriginal = dx;
+  let dyOriginal = dy;
 
   foto.style.left = x + "px";
   foto.style.top = y + "px";
 
   function mover() {
-    if (!pausado) {
-      x += dx;
-      y += dy;
+    x += dx;
+    y += dy;
 
-      if (x <= 0 || x + foto.offsetWidth >= innerWidth) dx *= -1;
-      if (y <= 0 || y + foto.offsetHeight >= innerHeight) dy *= -1;
+    if (x <= 0 || x + foto.offsetWidth >= innerWidth) dx *= -1;
+    if (y <= 0 || y + foto.offsetHeight >= innerHeight) dy *= -1;
 
-      foto.style.left = x + "px";
-      foto.style.top = y + "px";
-    }
+    foto.style.left = x + "px";
+    foto.style.top = y + "px";
+
     requestAnimationFrame(mover);
   }
   mover();
 
   foto.onclick = () => {
-    pausado = true;
+    dx = 0;
+    dy = 0;
     foto.classList.add("destaque-foto");
 
     setTimeout(() => {
+      dx = dxOriginal;
+      dy = dyOriginal;
       foto.classList.remove("destaque-foto");
-      pausado = false;
     }, 4000);
   };
 });
@@ -281,7 +285,8 @@ function finalizar() {
     setTimeout(() => c.remove(), 3000);
   }
 
-  ["cat1.png","cat2.png","cat3.png"].forEach(src => {
+  const gatos = ["cat1.png","cat2.png","cat3.png"];
+  gatos.forEach(src => {
     const g = document.createElement("img");
     g.src = src;
     g.className = "gato";
