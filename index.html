@@ -20,8 +20,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 50;
-  background: #4b0082;
+  z-index: 20;              /* acima das fotos */
+  background: transparent; /* NÃO cobre o fundo */
 }
 
 .envelope {
@@ -72,7 +72,7 @@ body {
   padding: 32px 26px;
   overflow-y: auto;
   display: none;
-  z-index: 10;
+  z-index: 30; /* acima de tudo */
 }
 
 /* ===== TEXTO ===== */
@@ -126,7 +126,7 @@ button {
   width: 140px;
   border-radius: 15px;
   opacity: 0.65;
-  z-index: 1; /* atrás da carta */
+  z-index: 1; /* fundo */
   cursor: pointer;
   transition: transform 0.4s, opacity 0.4s, box-shadow 0.4s;
 }
@@ -134,7 +134,7 @@ button {
 .foto.destaque-foto {
   opacity: 1;
   transform: scale(1.8);
-  z-index: 20;
+  z-index: 25;
   box-shadow: 0 0 35px white;
 }
 
@@ -234,9 +234,7 @@ function abrirEnvelope() {
 }
 
 /* ===== MOVIMENTO TV ANTIGA ===== */
-const fotos = document.querySelectorAll(".foto");
-
-fotos.forEach(foto => {
+document.querySelectorAll(".foto").forEach(foto => {
   let x = Math.random() * (innerWidth - 150);
   let y = Math.random() * (innerHeight - 150);
   let dx = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? -1 : 1);
@@ -283,8 +281,7 @@ function finalizar() {
     setTimeout(() => c.remove(), 3000);
   }
 
-  const gatos = ["cat1.png","cat2.png","cat3.png"];
-  gatos.forEach(src => {
+  ["cat1.png","cat2.png","cat3.png"].forEach(src => {
     const g = document.createElement("img");
     g.src = src;
     g.className = "gato";
